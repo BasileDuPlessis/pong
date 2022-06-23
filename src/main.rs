@@ -66,4 +66,5 @@ fn test_bounce_step_random() {
 
     ball.step();
     assert_eq!( (ball.w, ball.h), (101, 100) );
+    
 }
