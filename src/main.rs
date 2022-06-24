@@ -7,6 +7,7 @@ struct Ball {
     h: i16,
     r: f32,
     s: f32,
+    
 }
 
 impl Ball {
