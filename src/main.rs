@@ -1,3 +1,5 @@
+use std::f32::consts::PI;
+
 fn main() {
     println!("Hello, world!");
 }
@@ -11,18 +13,18 @@ struct Ball {
 }
 
 impl Ball {
-    //make ball bounce against the right wall 
+    //make ball bounce against a vertical wall 
     fn bounce_vertical(&mut self) {
-        if self.a > 180. {
-            self.a = 540. - self.a;
+        if self.a > PI {
+            self.a = 3. * PI - self.a;
         } else {
-            self.a = 180. - self.a;
+            self.a = PI - self.a;
         }
     }
 
     //make ball bounce against the ceil 
     fn bounce_horizontal(&mut self) {
-        self.a = 360. - self.a;
+        self.a = 2. * PI - self.a;
     }
 
     //move ball one step ahead
@@ -36,68 +38,41 @@ impl Ball {
 
 #[test]
 //Test bounce from RIGHT to LEFT
-fn test_bounce_right_to_left() {
-    let mut ball = Ball { w: 0, h: 0, a: 340., s:2. };    
+fn test_bounce_total_radian_eq_pi_divided_2() {
+    let a = 0.5;
+    let mut ball = Ball { w: 0, h: 0, a: a, s:2. };    
     ball.bounce_vertical();    
-    assert_eq!(ball.a, 200.);
-
-    ball.a = 20.;
-    ball.bounce_vertical();    
-    assert_eq!(ball.a, 160.);
+    assert_eq!(ball.a + a, PI);
 }
 
 #[test]
 //Test bounce from LEFT to RIGHT
-fn test_bounce_left_to_right() {
-    let mut ball = Ball { w: 0, h: 0, a: 160., s:2. };    
+fn test_bounce_total_radian_eq_1dot5_pi() {
+    let a = PI + 0.5;
+    let mut ball = Ball { w: 0, h: 0, a: a, s:2. };    
     ball.bounce_vertical();    
-    assert_eq!(ball.a, 20.);
-
-    ball.a = 200.;
-    ball.bounce_vertical();    
-    assert_eq!(ball.a, 340.);
+    assert_eq!(ball.a + a, 3. * PI);
 }
 
 #[test]
 //Test bounce on ceil
-fn test_bounce_ceil() {
-    let mut ball = Ball { w: 0, h: 0, a: 20., s:2. };    
+fn test_bounce_total_radian_eq_pi() {
+    let a = PI + 0.5;
+    let mut ball = Ball { w: 0, h: 0, a: a, s:2. };    
     ball.bounce_horizontal();    
-    assert_eq!(ball.a, 340.);
-
-    ball.a = 160.;
-    ball.bounce_horizontal();    
-    assert_eq!(ball.a, 200.);
-}
-
-#[test]
-//Test bounce on floor
-fn test_bounce_floor() {
-    let mut ball = Ball { w: 0, h: 0, a: 340., s:2. };    
-    ball.bounce_horizontal();    
-    assert_eq!(ball.a, 20.);
-
-    ball.a = 200.;
-    ball.bounce_horizontal();    
-    assert_eq!(ball.a, 160.);
+    assert_eq!(ball.a + a, 2. * PI);
 }
 
 
 
 #[test]
-//Test step one pixel ahead in line
-fn test_bounce_step() {
-    let mut ball = Ball { w: 100, h: 100, a: 0., s:1. };
+//Test step right and bottom
+fn test_bounce_step_right_bottom() {
+    let w = 100;
+    let h = 100;
+    let mut ball = Ball { w: 100, h: 100, a: 2. * PI - 0.4, s:3. };
 
     ball.step();
-    assert_eq!( (ball.w, ball.h), (101, 100) );
-}
-
-#[test]
-//Test step in random conditio
-fn test_bounce_step_random() {
-    let mut ball = Ball { w: 100, h: 100, a: 345., s:3. };
-
-    ball.step();
-    assert_eq!( (ball.w, ball.h), (102, 99) );
+    assert_eq!( ball.w > w, true);
+    assert_eq!( ball.h < h, true);
 }
