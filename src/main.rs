@@ -113,5 +113,5 @@ fn test_bounce_step_random() {
     let mut ball = Ball { w: 100, h: 100, a: 345., s:3. };
 
     ball.step();
-    assert_eq!( (ball.w, ball.h), (101, 100) );
+    assert_eq!( (ball.w, ball.h), (102, 99) );
 }
